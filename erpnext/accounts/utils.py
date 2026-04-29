@@ -2237,7 +2237,7 @@ def delink_original_entry(pl_entry, partial_cancel=False):
 			query = query.where(ple.voucher_detail_no == pl_entry.voucher_detail_no)
 
 		if not is_immutable_ledger_enabled():
-			query = query.set(ple.delinked, True)
+			query = query.set(ple.delinked, 1)  # nexfin-patch: PostgreSQL rejects boolean for smallint Check field
 
 		query.run()
 

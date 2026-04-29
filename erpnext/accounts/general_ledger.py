@@ -821,7 +821,8 @@ def validate_against_pcv(is_opening, posting_date, company):
 		)
 
 	last_pcv_date = frappe.db.get_value(
-		"Period Closing Voucher", {"docstatus": 1, "company": company}, [{"MAX": "period_end_date"}]
+		"Period Closing Voucher", {"docstatus": 1, "company": company}, [{"MAX": "period_end_date"}],
+		order_by=None,  # nexfin-patch: PostgreSQL rejects ORDER BY creation with MAX aggregate (no GROUP BY)
 	)
 
 	if last_pcv_date and getdate(posting_date) <= getdate(last_pcv_date):
